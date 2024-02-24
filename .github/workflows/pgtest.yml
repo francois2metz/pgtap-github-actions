@@ -33,10 +33,16 @@ jobs:
           SHELL: /bin/bash
 
       - name: install postgresql-common
-        run: sudo apt install -y postgresql-common
+        run: sudo apt install -y postgresql-common curl ca-certificates
 
       - name: install pgdg repo
-        run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+        run: sudo install -d /usr/share/postgresql-common/pgdg
+
+      - name: fetch pgdg signature keys
+        run: sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+      - name: setup repo
+        run: sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
       - name: install postgres-server-dev-${{ matrix.go-version }}
         run: sudo apt-get update && apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.go-version }}
