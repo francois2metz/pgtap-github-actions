@@ -7,10 +7,13 @@ jobs:
   pgtap:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '14', '15', '16' ]
 
     services:
       postgres:
-        image: postgres:14
+        image: postgres:${{ matrix.go-version }}
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -30,7 +33,7 @@ jobs:
           SHELL: /bin/bash
 
       - name: install postgres dev
-        run: sudo apt-get install -y --no-install-recommends postgresql-server-dev-14
+        run: sudo apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.go-version }}
 
       - name: Checkout pgtap
         uses: actions/checkout@v3
