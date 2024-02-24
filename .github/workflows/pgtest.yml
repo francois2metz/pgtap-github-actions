@@ -32,8 +32,14 @@ jobs:
         env:
           SHELL: /bin/bash
 
-      - name: install postgres dev
-        run: sudo apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.go-version }}
+      - name: install postgresql-common
+        run: sudo apt install -y postgresql-common
+
+      - name: install pgdg repo
+        run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+
+      - name: install postgres-server-dev-${{ matrix.go-version }}
+        run: sudo apt-get update && apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.go-version }}
 
       - name: Checkout pgtap
         uses: actions/checkout@v3
