@@ -13,7 +13,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:${{ matrix.go-version }}
+        image: postgres:${{ matrix.pg-version }}
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -44,8 +44,8 @@ jobs:
       - name: setup repo
         run: sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
-      - name: install postgres-server-dev-${{ matrix.go-version }}
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.go-version }}
+      - name: install postgres-server-dev-${{ matrix.pg-version }}
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-server-dev-${{ matrix.pg-version }}
 
       - name: Checkout pgtap
         uses: actions/checkout@v3
